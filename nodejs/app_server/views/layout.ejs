@@ -1,0 +1,28 @@
+<html>
+    <head>
+    </head>
+    <body>
+        <%- body%>
+        <script src="http://sehirharitasi.ibb.gov.tr/api/map2.js"></script>
+        <script>
+         
+          var ibbMAP = new SehirHaritasiAPI({mapFrame:"mapFrame",apiKey:"ec467a185176421b9f6f8cb0f84d41ec"}, function(){
+	ibbMAP.RouteAnalysis.TUBS({
+		start:
+		{
+			lat: 41.01662773,
+			lon: 28.91846180
+		},
+		finish:
+		{
+			lat: 41.00781966,
+			lon: 28.93090725
+		},
+		type: "BUS,SUBWAY,WALK",
+		time: "20:00",
+		date: "2016-06-24"
+	}); 
+});
+          </script>
+    </body>
+</html>
