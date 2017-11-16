@@ -1,22 +1,21 @@
-from flask import Flask,jsonify,request
-api = Flask(__name__)
+from flask import Flask, jsonify,request
+import requests,json
+app = Flask(__name__)
 
 
-@api.route("/addr_to_coo/")
-def addr_to_coo():
-    if request.method == 'POST':
-        addr_location = request.args.post('my_addr', '')
+@app.route('/addr_to_co', methods=['GET'])
+def get_tasks():
+    
+        addr_location = request.args.get("my_addr")
+        data = requests.get("http://maps.google.com/maps/api/geocode/json?address={}".format(addr_location))
+        tmp_data = json.loads(data.content) 
         try:
-            data = request.get("http://maps.google.com/maps/api/geocode/json?address={}".format(addr_location))
-            return data.json
-        except:    
-            return  jsonify(status=False)
-
-
-
-
-app.run()
-
+            return jsonify(lat=tmp_data["results"][0]["geometry"]["bounds"]["northeast"]["lat"],long=tmp_data["results"][0]["geometry"]["bounds"]["northeast"]["lon"])
+        except:
+            return jsonify(status=False)
+        
+if __name__ == '__main__':
+    app.run(debug=True)
 
 
 
