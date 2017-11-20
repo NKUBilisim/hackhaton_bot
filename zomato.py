@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import requests,json
 
 class Zomato():
@@ -12,21 +14,17 @@ class Zomato():
         data = requests.get(self.base_url+"geocode?lat="+lat+"&lon="+lon, headers={"user-key":self.token})
         return data
 
-    def get_nearby_location(self,location_addr,money_count):
-        data = requests.get("http://localhost:5000/addr_to_co?my_addr={}".format(location_addr))
-        coor_data = json.loads(data.content)
-
-        print(coor_data['lat'])
-
+    def get_nearby_location(self,location_obj,money_count):
+        
         recommodation_data = []
         tmp_rec = {}
             ##ask to the zomato
         payload = {'user-key': '{}'.format(self.token)}
 
-        restaurant_data = requests.get("https://developers.zomato.com/api/v2.1/geocode?lat={}&lon={}".format(coor_data['lat'],coor_data['long']),headers=payload)      
+        restaurant_data = requests.get("https://developers.zomato.com/api/v2.1/geocode?lat={}&lon={}".format(location_obj['latitude'],location_obj['longitude']),headers=payload)      
         tmp_data =  json.loads(restaurant_data.content)
         
-
+        print(tmp_data)
         for i in tmp_data["nearby_restaurants"]:
             control_price = int(i['restaurant']['average_cost_for_two'])
 
@@ -38,6 +36,3 @@ class Zomato():
             recommodation_data.append(tmp_rec)
         return recommodation_data
 
-
-obj = Zomato("ba778a4b6afff374876684ada9ddeac1")
-print(obj.get_nearby_location("Istanbul",23)) 
