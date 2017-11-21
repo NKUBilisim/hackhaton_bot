@@ -38,6 +38,10 @@ def money_to_eat(bot,update):
         data = z.get_nearby_location(location_data,money_count)
         bot.sendMessage(chat_id=update.message.chat_id, text=str(data))
 
+def test2(bot,update):
+    print("LLaaa")
+    x = update.message.photo[2].file_id
+    print(x)
 
 ##Handler
 
@@ -51,6 +55,7 @@ dispatcher.add_handler(start_handler)
 dispatcher.add_handler(deneme_handler)
 dispatcher.add_handler(money_to_eat)
 dispatcher.add_handler(MessageHandler(Filters.location, set_location))
+dispatcher.add_handler(MessageHandler(Filters.photo, test2))
 
 
 updater.start_polling()
